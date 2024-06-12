@@ -1,6 +1,6 @@
-import { useMemoizedFn } from 'ahooks'
-import type React from 'react'
-import { useCallback, useRef, useState } from 'react'
+import { useMemoizedFn } from "ahooks";
+import type React from "react";
+import { useCallback, useRef, useState } from "react";
 
 export default function useDragResize(
   handleResize: ({ width }: { width: number }) => void,
@@ -10,40 +10,40 @@ export default function useDragResize(
     maxWidth: maxWidthConfig,
   }: {
     initSize: {
-      width: number
-    }
-    minWidth?: number
-    maxWidth?: number
+      width: number;
+    };
+    minWidth?: number;
+    maxWidth?: number;
   }
 ): [(event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void, boolean] {
-  const [resizing, setResizing] = useState(false)
+  const [resizing, setResizing] = useState(false);
   const positionRef = useRef({
     left: 0,
-  })
-  const initSizeRef = useRef(initSize)
+  });
+  const initSizeRef = useRef(initSize);
   const handleMouseMove = useMemoizedFn(async (event: MouseEvent) => {
-    const distance = event.clientX - positionRef.current.left
-    let width = initSizeRef.current.width + distance
-    if (minWidthConfig !== undefined) width = Math.max(width, minWidthConfig)
+    const distance = event.clientX - positionRef.current.left;
+    let width = initSizeRef.current.width + distance;
+    if (minWidthConfig !== undefined) width = Math.max(width, minWidthConfig);
 
-    if (maxWidthConfig !== undefined) width = Math.min(width, maxWidthConfig)
+    if (maxWidthConfig !== undefined) width = Math.min(width, maxWidthConfig);
 
-    handleResize({ width })
-  })
+    handleResize({ width });
+  });
   const handleMouseUp = useCallback(() => {
-    window.removeEventListener('mousemove', handleMouseMove)
-    window.removeEventListener('mouseup', handleMouseUp)
-    setResizing(false)
-  }, [handleMouseMove])
+    window.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("mouseup", handleMouseUp);
+    setResizing(false);
+  }, [handleMouseMove]);
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      positionRef.current.left = event.clientX
-      initSizeRef.current = initSize
-      window.addEventListener('mousemove', handleMouseMove)
-      window.addEventListener('mouseup', handleMouseUp)
-      setResizing(true)
+      positionRef.current.left = event.clientX;
+      initSizeRef.current = initSize;
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      setResizing(true);
     },
     [handleMouseMove, handleMouseUp, initSize]
-  )
-  return [handleMouseDown, resizing]
+  );
+  return [handleMouseDown, resizing];
 }

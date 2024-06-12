@@ -15,9 +15,7 @@
   ],
   "scripts": {
     "check:ts": "tsc --noEmit",
-    "build": "cross-env NODE_ENV=production avenger build",
-    "build:website": "dumi build",
-    "release": "bumpp package.json --commit --push --tag",
+    "build": "rollup -c",
     "start": "cross-env NODE_ENV=development avenger build --watch",
     "start:website": "dumi dev"
   },
@@ -45,6 +43,7 @@
     "ahooks": "^3.8.0",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.11",
+    "eslint": "^8.57.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "mobx": "6.12.3",
@@ -58,6 +57,9 @@
     "@osdoc-dev/avenger-cli": "^0.2.0",
     "@osdoc-dev/eslint-config-preset-prettier": "1.0.5-beta.0",
     "@osdoc-dev/eslint-config-preset-react": "1.0.5-beta.0",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
     "@types/classnames": "^2.2.11",
     "@types/lodash": "^4.14.165",
     "@types/react": "^17.0.0",
@@ -71,7 +73,6 @@
     "dumi": "^1.1.23",
     "husky": "^4.3.6",
     "identity-obj-proxy": "^3.0.0",
-    "less": "^3.12.2",
     "less-loader": "^7.1.0",
     "lint-staged": "^11.0.0",
     "postcss": "^8.1.14",
@@ -79,9 +80,11 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-is": "^18.3.1",
-    "rollup-plugin-postcss": "^4.0.0",
+    "rollup": "^2.79.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-typescript2": "^0.36.0",
     "tslib": "^2.6.3",
-    "typescript": "5.4.5"
+    "typescript": "^5.4.5"
   },
   "peerDependencies": {
     "react": ">=18"

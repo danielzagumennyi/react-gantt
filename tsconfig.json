@@ -1,17 +1,10 @@
 {
   // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
-  "include": [
-    "src",
-    "types",
-    "./typings.d.ts"
-  ],
+  "include": ["src", "types", "./typings.d.ts"],
   "compilerOptions": {
     "module": "esnext",
-    "target": "es2019",
-    "lib": [
-      "dom",
-      "es2016"
-    ],
+    "target": "ES5",
+    "lib": ["dom", "es2016"],
     "importHelpers": true,
     // output .d.ts declaration files for consumers
     "declaration": true,
@@ -38,6 +31,6 @@
     // error out if import and file system have a casing mismatch. Recommended by TS
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true
   }
 }

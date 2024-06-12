@@ -1,76 +1,82 @@
-import { useMemoizedFn } from 'ahooks'
-import { observer } from 'mobx-react-lite'
-import React, { useCallback, useContext, useRef, useState } from 'react'
-import Context from '../../context'
-import type { Gantt } from '../../types'
-import DragResize from '../drag-resize'
-import './index.less'
+import { useMemoizedFn } from "ahooks";
+import { observer } from "mobx-react-lite";
+import React, { useCallback, useContext, useRef, useState } from "react";
+import Context from "../../context";
+import type { Gantt } from "../../types";
+import DragResize from "../drag-resize";
+import "./index.less";
 
 interface TaskBarProps {
-  data: Gantt.Bar
+  data: Gantt.Bar;
 }
-const barH = 8
-let startX = 0
-const renderInvalidBarDefault = element => element
+const barH = 8;
+let startX = 0;
+const renderInvalidBarDefault = (element) => element;
 const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
-  const { store, prefixCls, renderInvalidBar = renderInvalidBarDefault } = useContext(Context)
-  const triggerRef = useRef<HTMLDivElement>(null)
-  const { translateY, translateX, width, dateTextFormat, record } = data
-  const [visible, setVisible] = useState(false)
+  const {
+    store,
+    prefixCls,
+    renderInvalidBar = renderInvalidBarDefault,
+  } = useContext(Context);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const { translateY, translateX, width, dateTextFormat, record } = data;
+  const [visible, setVisible] = useState(false);
 
-  const { disabled = false } = record || {}
+  const { disabled = false } = record || {};
 
-  const { translateX: viewTranslateX, rowHeight } = store
-  const top = translateY
-  const prefixClsInvalidTaskBar = `${prefixCls}-invalid-task-bar`
+  const { translateX: viewTranslateX, rowHeight } = store;
+  const top = translateY;
+  const prefixClsInvalidTaskBar = `${prefixCls}-invalid-task-bar`;
 
   const handleMouseEnter = useCallback(() => {
-    if (data.stepGesture === 'moving') return
-    startX = triggerRef.current?.getBoundingClientRect()?.left || 0
-    setVisible(true)
-  }, [data.stepGesture])
+    if (data.stepGesture === "moving") return;
+    startX = triggerRef.current?.getBoundingClientRect()?.left || 0;
+    setVisible(true);
+  }, [data.stepGesture]);
   const handleMouseLeave = useCallback(() => {
-    if (data.stepGesture === 'moving') return
+    if (data.stepGesture === "moving") return;
 
-    setVisible(false)
-    store.handleInvalidBarLeave()
-  }, [data.stepGesture, store])
+    setVisible(false);
+    store.handleInvalidBarLeave();
+  }, [data.stepGesture, store]);
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-      if (data.stepGesture === 'moving') return
+      if (data.stepGesture === "moving") return;
 
-      const pointerX = viewTranslateX + (event.clientX - startX)
+      const pointerX = viewTranslateX + (event.clientX - startX);
       // eslint-disable-next-line no-shadow
-      const { left, width } = store.startXRectBar(pointerX)
-      store.handleInvalidBarHover(data, left, Math.ceil(width))
+      const { left, width } = store.startXRectBar(pointerX);
+      store.handleInvalidBarHover(data, left, Math.ceil(width));
     },
     [data, store, viewTranslateX]
-  )
+  );
 
   const handleBeforeResize = () => {
-    store.handleInvalidBarDragStart(data)
-  }
+    store.handleInvalidBarDragStart(data);
+  };
   const handleResize = useCallback(
     ({ width: newWidth, x }) => {
-      store.updateBarSize(data, { width: newWidth, x })
+      store.updateBarSize(data, { width: newWidth, x });
     },
     [data, store]
-  )
+  );
   const handleLeftResizeEnd = useCallback(
     (oldSize: { width: number; x: number }) => {
-      store.handleInvalidBarDragEnd(data, oldSize)
+      store.handleInvalidBarDragEnd(data, oldSize);
     },
     [data, store]
-  )
+  );
   const handleAutoScroll = useCallback(
     (delta: number) => {
-      store.setTranslateX(store.translateX + delta)
+      store.setTranslateX(store.translateX + delta);
     },
     [store]
-  )
-  const reachEdge = useMemoizedFn((position: 'left' | 'right') => position === 'left' && store.translateX <= 0)
+  );
+  const reachEdge = useMemoizedFn(
+    (position: "left" | "right") => position === "left" && store.translateX <= 0
+  );
 
-  if (disabled) return null
+  if (disabled) return null;
 
   return (
     <DragResize
@@ -85,7 +91,7 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
       }}
       minWidth={30}
       grid={30}
-      type='right'
+      type="right"
       scroller={store.chartElementRef.current || undefined}
       onAutoScroll={handleAutoScroll}
       reachEdge={reachEdge}
@@ -105,14 +111,14 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
         renderInvalidBar(
           <div
             className={`${prefixClsInvalidTaskBar}-block`}
-            aria-haspopup='true'
-            aria-expanded='false'
+            aria-haspopup="true"
+            aria-expanded="false"
             style={{
               left: translateX,
               width: Math.ceil(width),
               transform: `translateY(${top}px)`,
-              backgroundColor: '#7B90FF',
-              borderColor: '#7B90FF',
+              backgroundColor: "#7B90FF",
+              borderColor: "#7B90FF",
             }}
           >
             <div
@@ -135,6 +141,6 @@ const InvalidTaskBar: React.FC<TaskBarProps> = ({ data }) => {
           data
         )}
     </DragResize>
-  )
-}
-export default observer(InvalidTaskBar)
+  );
+};
+export default observer(InvalidTaskBar);
