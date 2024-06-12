@@ -43,6 +43,7 @@ export interface GanttProps<RecordType = DefaultRecordType> {
   isRestDay?: (date: string) => boolean
   unit?: Gantt.Sight
   rowHeight?: number
+  barHeight?: number
   innerRef?: React.MutableRefObject<GanttRef>
   getBarColor?: GanttContext<RecordType>['getBarColor']
   showBackToday?: GanttContext<RecordType>['showBackToday']
@@ -66,7 +67,7 @@ export interface GanttProps<RecordType = DefaultRecordType> {
    * 自定义日期筛选维度
    */
   customSights?: Gantt.SightConfig[]
-  locale?: GanttLocale;
+  locale?: GanttLocale
 
   /**
    * 隐藏左侧表格
@@ -79,32 +80,32 @@ export interface GanttRef {
 }
 
 export interface GanttLocale {
-  today: string;
-  day: string;
-  days: string;
-  week: string;
-  month: string;
-  quarter: string;
-  halfYear: string;
-  firstHalf: string;
-  secondHalf: string,
+  today: string
+  day: string
+  days: string
+  week: string
+  month: string
+  quarter: string
+  halfYear: string
+  firstHalf: string
+  secondHalf: string
   majorFormat: {
-    day: string;
-    week: string;
-    month: string;
-    quarter: string;
-    halfYear: string;
-  },
+    day: string
+    week: string
+    month: string
+    quarter: string
+    halfYear: string
+  }
   minorFormat: {
-    day: string;
-    week: string;
-    month: string;
-    quarter: string;
-    halfYear: string;
+    day: string
+    week: string
+    month: string
+    quarter: string
+    halfYear: string
   }
 }
 
-export const defaultLocale: GanttLocale = {...zhCN};
+export const defaultLocale: GanttLocale = { ...zhCN }
 
 const GanttComponent = <RecordType extends DefaultRecordType>(props: GanttProps<RecordType>) => {
   const {
@@ -130,6 +131,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(props: GanttProps<
     renderBarThumb,
     scrollTop = true,
     rowHeight = ROW_HEIGHT,
+    barHeight = BAR_HEIGHT,
     innerRef,
     disabled = false,
     alwaysShowTaskBar = true,
@@ -137,7 +139,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(props: GanttProps<
     renderRightText,
     onExpand,
     customSights = [],
-    locale = {...defaultLocale},
+    locale = { ...defaultLocale },
     hideTable = false,
   } = props
 
@@ -192,7 +194,7 @@ const GanttComponent = <RecordType extends DefaultRecordType>(props: GanttProps<
       tableCollapseAble,
       renderBarThumb,
       scrollTop,
-      barHeight: BAR_HEIGHT,
+      barHeight,
       alwaysShowTaskBar,
       renderLeftText,
       renderRightText,
