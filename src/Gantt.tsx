@@ -21,7 +21,7 @@ import { BAR_HEIGHT, ROW_HEIGHT, TABLE_INDENT } from "./constants";
 import type { GanttContext } from "./context";
 import Context from "./context";
 import "./Gantt.less";
-import { zhCN } from "./locales";
+import { enUS } from "./locales";
 import GanttStore from "./store";
 import type { DefaultRecordType, Gantt } from "./types";
 
@@ -116,7 +116,7 @@ export interface GanttLocale {
   };
 }
 
-export const defaultLocale: GanttLocale = { ...zhCN };
+export const defaultLocale: GanttLocale = { ...enUS };
 
 const GanttComponent = <RecordType extends DefaultRecordType>(
   props: GanttProps<RecordType>
