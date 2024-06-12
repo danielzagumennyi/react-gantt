@@ -1,4 +1,4 @@
-import { Gantt } from './types'
+import type { Gantt } from './types'
 
 /**
  * 将树形数据向下递归为一维数组

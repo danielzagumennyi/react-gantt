@@ -1,6 +1,7 @@
-import { usePersistFn } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import { observer } from 'mobx-react-lite'
-import React, { HTMLProps, useMemo, useRef, useState } from 'react'
+import type { HTMLProps } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import AutoScroller from './AutoScroller'
 
@@ -43,7 +44,7 @@ const DragResize: React.FC<DragResizeProps> = ({
   ...otherProps
 }) => {
   const [resizing, setResizing] = useState(false)
-  const handleAutoScroll = usePersistFn((delta: number) => {
+  const handleAutoScroll = useMemoizedFn((delta: number) => {
     updateSize()
     onAutoScroll(delta)
   })
@@ -60,18 +61,16 @@ const DragResize: React.FC<DragResizeProps> = ({
   const moveRef = useRef({
     clientX: 0,
   })
-  const updateSize = usePersistFn(() => {
+  const updateSize = useMemoizedFn(() => {
     if (disabled) return
     const distance = moveRef.current.clientX - positionRef.current.clientX + autoScroll.autoScrollPos
     switch (type) {
       case 'left': {
         let width = positionRef.current.width - distance
-        if (minWidth !== undefined) {
-          width = Math.max(width, minWidth)
-        }
-        if (grid) {
-          width = snap(width, grid)
-        }
+        if (minWidth !== undefined) width = Math.max(width, minWidth)
+
+        if (grid) width = snap(width, grid)
+
         const pos = width - positionRef.current.width
         const x = positionRef.current.x - pos
         onResize({ width, x })
@@ -80,12 +79,10 @@ const DragResize: React.FC<DragResizeProps> = ({
       // 向右，x不变，只变宽度
       case 'right': {
         let width = positionRef.current.width + distance
-        if (minWidth !== undefined) {
-          width = Math.max(width, minWidth)
-        }
-        if (grid) {
-          width = snap(width, grid)
-        }
+        if (minWidth !== undefined) width = Math.max(width, minWidth)
+
+        if (grid) width = snap(width, grid)
+
         const { x } = positionRef.current
         onResize({ width, x })
         break
@@ -93,28 +90,25 @@ const DragResize: React.FC<DragResizeProps> = ({
       case 'move': {
         const { width } = positionRef.current
         let rightDistance = distance
-        if (grid) {
-          rightDistance = snap(distance, grid)
-        }
+        if (grid) rightDistance = snap(distance, grid)
+
         const x = positionRef.current.x + rightDistance
         onResize({ width, x })
         break
       }
     }
   })
-  const handleMouseMove = usePersistFn((event: MouseEvent) => {
+  const handleMouseMove = (event: MouseEvent) => {
     if (disabled) return
     if (!resizing) {
       setResizing(true)
-      if (!clickStart) {
-        onBeforeResize && onBeforeResize()
-      }
+      if (!clickStart) onBeforeResize && onBeforeResize()
     }
     moveRef.current.clientX = event.clientX
     updateSize()
-  })
+  }
 
-  const handleMouseUp = usePersistFn(() => {
+  const handleMouseUp = useMemoizedFn(() => {
     if (disabled) return
     autoScroll.stop()
     window.removeEventListener('mousemove', handleMouseMove)
@@ -128,12 +122,11 @@ const DragResize: React.FC<DragResizeProps> = ({
         })
     }
   })
-  const handleMouseDown = usePersistFn((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleMouseDown = useMemoizedFn((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (disabled) return
     event.stopPropagation()
-    if (enableAutoScroll && scroller) {
-      autoScroll.start()
-    }
+    if (enableAutoScroll && scroller) autoScroll.start()
+
     if (clickStart) {
       onBeforeResize && onBeforeResize()
       setResizing(true)

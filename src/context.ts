@@ -1,6 +1,7 @@
-import React, { createContext } from 'react'
-import GanttStore from './store'
-import { DefaultRecordType, Gantt } from './types'
+import type React from 'react'
+import { createContext } from 'react'
+import type GanttStore from './store'
+import type { DefaultRecordType, Gantt } from './types'
 
 export interface GanttContext<RecordType = DefaultRecordType> {
   prefixCls: string

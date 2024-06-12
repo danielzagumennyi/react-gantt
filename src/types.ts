@@ -1,5 +1,5 @@
-import { Dayjs } from 'dayjs'
-import React from 'react'
+import type { Dayjs } from 'dayjs'
+import type React from 'react'
 
 export type DefaultRecordType = Record<string, any>
 export namespace Gantt {

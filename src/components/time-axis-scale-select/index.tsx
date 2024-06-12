@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { observer } from 'mobx-react-lite'
 import React, { useCallback, useContext, useRef, useState } from 'react'
 import Context from '../../context'
-import { Gantt } from '../../types'
+import type { Gantt } from '../../types'
 import './index.less'
 
 const TimeAxisScaleSelect: React.FC = () => {

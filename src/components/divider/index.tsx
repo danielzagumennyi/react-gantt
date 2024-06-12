@@ -1,8 +1,8 @@
-import React, { useContext, useCallback } from 'react'
-import { observer } from 'mobx-react-lite'
 import classNames from 'classnames'
-import useDragResize from '../../hooks/useDragResize'
+import { observer } from 'mobx-react-lite'
+import React, { useCallback, useContext } from 'react'
 import Context from '../../context'
+import useDragResize from '../../hooks/useDragResize'
 import './index.less'
 
 const Divider: React.FC = () => {

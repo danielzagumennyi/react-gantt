@@ -1,4 +1,4 @@
-import { usePersistFn } from 'ahooks'
+import { useMemoizedFn } from 'ahooks'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import { observer } from 'mobx-react-lite'
@@ -6,7 +6,7 @@ import React, { useCallback, useContext, useMemo } from 'react'
 import { TOP_PADDING } from '../../constants'
 import Context from '../../context'
 import { ONE_DAY_MS } from '../../store'
-import { Gantt } from '../../types'
+import type { Gantt } from '../../types'
 import DragResize from '../drag-resize'
 import './index.less'
 
@@ -104,14 +104,14 @@ const TaskBar: React.FC<TaskBarProps> = ({ data }) => {
     },
     [data.record, onBarClick]
   )
-  const reachEdge = usePersistFn((position: 'left' | 'right') => position === 'left' && store.translateX <= 0)
+  const reachEdge = useMemoizedFn((position: 'left' | 'right') => position === 'left' && store.translateX <= 0)
   // 根据不同的视图确定拖动时的单位，在任何视图下都以一天为单位
   const grid = useMemo(() => ONE_DAY_MS / store.pxUnitAmp, [store.pxUnitAmp])
 
-  const moveCalc = -(width / store.pxUnitAmp);
+  const moveCalc = -(width / store.pxUnitAmp)
 
   const days = useMemo(() => {
-    const daysWidth = Number(getDateWidth(translateX + width + moveCalc, translateX));
+    const daysWidth = Number(getDateWidth(translateX + width + moveCalc, translateX))
 
     return `${daysWidth} ${daysWidth > 1 ? locale.days : locale.day}`
   }, [translateX, width, moveCalc, translateX])
